@@ -1,0 +1,33 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+.env
+
+# Archivos de configuración de entorno
+*.env
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de logs
+*.log
+
+# Archivos de VS Code
+.vscode/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de test y cobertura
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+
+# Archivos de dependencias
+pip-log.txt
+pip-delete-this-directory.txt
