@@ -3,39 +3,37 @@ import requests
 import os
 from dotenv import load_dotenv
 
+# Carga variables de entorno desde .env (por ejemplo, la API key)
 load_dotenv()
 router = APIRouter()
 
+# Obtiene la clave de API y configura el endpoint y modelo a usar
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-MODEL = "gpt-4o"  # o cualquier modelo compatible con JSON (ej: openai/gpt-4-turbo)
+MODEL = "gpt-4o"  # Modelo por defecto, puede cambiarse por otro compatible
 
 
 @router.post("/")
 async def generar_preguntas(request: Request):
     """
-    Genera preguntas a partir de un texto (contexto) según los parámetros enviados por el usuario:
-    {
-        "contexto": "texto sobre fauna/flora...",
-        "tipo": "multiple_choice" o "verdadero_falso",
-        "cantidad_preguntas": 5,
-        "opciones_por_pregunta": 4 (solo si es multiple_choice)
-    }
+    Genera preguntas a partir de un texto (contexto) según los parámetros enviados por el usuario.
+    Espera un JSON con:
+        - contexto: texto base para generar preguntas
+        - tipo: "multiple_choice" o "verdadero_falso"
+        - cantidad_preguntas: cuántas preguntas generar
+        - opciones_por_pregunta: solo si es multiple_choice
+    Devuelve un JSON con las preguntas generadas.
     """
     try:
         data = await request.json()
     except Exception as e:
+        # Error si el cuerpo no es JSON válido
         return {
             "error": "El cuerpo de la petición no es JSON válido o está vacío.",
             "detalle": str(e),
         }
 
-    # Extrae los parámetros enviados por el usuario en el cuerpo JSON de la petición.
-    # Si algún parámetro no está presente, se asigna un valor por defecto:
-    # - contexto: texto base para generar preguntas (por defecto, cadena vacía)
-    # - tipo: tipo de preguntas ("multiple_choice" por defecto)
-    # - cantidad: número de preguntas a generar (por defecto, 5)
-    # - opciones: número de opciones por pregunta (por defecto, 4)
+    # Extrae parámetros del cuerpo, con valores por defecto si faltan
     contexto = data.get("contexto", "")
     tipo = data.get("tipo", "multiple_choice")
     cantidad = data.get("cantidad_preguntas", 5)
@@ -44,7 +42,7 @@ async def generar_preguntas(request: Request):
     if not contexto:
         return {"error": "Debe incluirse un campo 'contexto' con el texto base."}
 
-    # Construcción dinámica del prompt
+    # Construye el prompt para el modelo de lenguaje
     prompt = f"""
         Usando el siguiente texto de contexto:
         \"\"\"{contexto}\"\"\"
@@ -67,6 +65,7 @@ async def generar_preguntas(request: Request):
         }}
         """
 
+    # Prepara el payload para la API de OpenRouter
     payload = {
         "model": MODEL,
         "response_format": {"type": "json_object"},  # Fuerza formato JSON válido
@@ -84,18 +83,20 @@ async def generar_preguntas(request: Request):
         "Content-Type": "application/json",
     }
 
+    # Llama a la API externa para generar las preguntas
     response = requests.post(OPENROUTER_URL, headers=headers, json=payload)
 
     try:
         result = response.json()
     except Exception as e:
+        # Error si la respuesta no es JSON válido
         return {
             "error": "La respuesta no es JSON válido",
             "detalle": str(e),
             "texto_original": response.text,
         }
 
-    # Verificación de estructura esperada
+    # Verifica que la respuesta tenga la estructura esperada
     if "choices" not in result or not result["choices"]:
         return {"error": "Respuesta inesperada de la API", "respuesta": result}
 
