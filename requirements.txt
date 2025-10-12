@@ -1,4 +1,10 @@
 fastapi
+uvicorn
 python-dotenv
 requests
-uvicorn
+python-multipart
+pypdf
+python-docx
+pdf2image
+pytesseract
+pillow
