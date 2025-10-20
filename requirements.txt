@@ -1,9 +1,10 @@
 fastapi
+uvicorn
 python-dotenv
 requests
-uvicorn
-
-# para subir archivos a FastAPI
 python-multipart
 pypdf
 python-docx
+pdf2image
+pytesseract
+pillow
