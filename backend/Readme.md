@@ -36,7 +36,7 @@ API construida con FastAPI para gestionar interacciones de chat.
 Para iniciar el servidor en modo desarrollo:
 
 ```sh
-uvicorn main:app --reload
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 La API estará disponible en [http://localhost:8000](http://localhost:8000).
@@ -66,9 +66,18 @@ se envía `file`.                     |
 | `tipo`                  | `string` | No        | `multiple_choice` | `"multiple_choice"` o `"verdadero_falso"`.                                                    |
 | `cantidad_preguntas`    | `int`    | No        | `5`               | Cantidad de preguntas a generar.                                                              |
 | `opciones_por_pregunta` | `int`    | No        | `4`               | Solo aplica a `multiple_choice`.                                                              |
+| `nivel_dificultad`      | `string` | No        | `intermedio`      | Nivel de dificultad: `"basico"`, `"intermedio"` o `"avanzado"`.                               |
 | `modelo`                | `string` | No        | `gpt-4o`          | Modelo de OpenRouter a usar.                                                                  |
 | `force_ocr`             | `bool`   | No        | `false`           | Si es `true`, **fuerza OCR** en PDFs (ver explicación abajo).                                 |
 | `ocr_lang`              | `string` | No        | `spa+eng`         | Idiomas del OCR (Tesseract). Se pueden combinar con `+` (ej. `spa`, `eng`, `spa+eng`).        |
+
+## Niveles de Dificultad
+
+El parámetro `nivel_dificultad` controla la complejidad de las preguntas generadas:
+
+- **`basico`**: Preguntas simples que requieren comprensión literal del texto, conceptos fundamentales y detalles obvios.
+- **`intermedio`**: Preguntas que requieren análisis, comparación, inferencia y comprensión de relaciones entre conceptos.
+- **`avanzado`**: Preguntas complejas que requieren síntesis, evaluación crítica, aplicación de conceptos y pensamiento analítico profundo.
 
 Dependencias (requirements)
 

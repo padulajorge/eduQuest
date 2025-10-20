@@ -71,12 +71,21 @@ def _ocr_pdf_bytes(file_bytes: bytes, lang="spa+eng") -> str:
         raise HTTPException(status_code=500, detail=f"OCR falló: {e}")
 
 
-def _build_prompt(contexto: str, tipo: str, cantidad: int, opciones: int) -> str:
+def _build_prompt(contexto: str, tipo: str, cantidad: int, opciones: int, nivel_dificultad: str) -> str:
+    # Mapear niveles de dificultad a descripciones detalladas
+    dificultad_desc = {
+        "basico": "básico - preguntas simples que requieren comprensión literal del texto, conceptos fundamentales y detalles obvios",
+        "intermedio": "intermedio - preguntas que requieren análisis, comparación, inferencia y comprensión de relaciones entre conceptos",
+        "avanzado": "avanzado - preguntas complejas que requieren síntesis, evaluación crítica, aplicación de conceptos y pensamiento analítico profundo"
+    }
+    
+    nivel_desc = dificultad_desc.get(nivel_dificultad, dificultad_desc["intermedio"])
+    
     return f"""
 Usando el siguiente texto de contexto:
 \"\"\"{contexto}\"\"\"
 
-Genera {cantidad} preguntas del tipo {tipo}.
+Genera {cantidad} preguntas del tipo {tipo} con nivel de dificultad {nivel_desc}.
 {"Cada pregunta debe tener " + str(opciones) + " opciones posibles si es multiple choice." if tipo == "multiple_choice" else ""}
 La respuesta correcta debe estar indicada.
 
@@ -141,6 +150,7 @@ async def generar_preguntas(
     tipo: str = Form("multiple_choice"),
     cantidad_preguntas: int = Form(5),
     opciones_por_pregunta: int = Form(4),
+    nivel_dificultad: str = Form("intermedio"),
     modelo: str = Form(MODEL_DEFAULT),
     file: Optional[UploadFile] = File(None),
     force_ocr: bool = Form(False),
@@ -183,5 +193,5 @@ async def generar_preguntas(
         )
 
     # 4️⃣ Crear prompt y llamar al modelo
-    prompt = _build_prompt(texto_final, tipo, cantidad_preguntas, opciones_por_pregunta)
+    prompt = _build_prompt(texto_final, tipo, cantidad_preguntas, opciones_por_pregunta, nivel_dificultad)
     return _call_openrouter(prompt, modelo)
