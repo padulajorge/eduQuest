@@ -98,6 +98,10 @@ Caso archivo: adjuntar PDF/DOCX (activar force_ocr si es escaneado).
 
 Errores comunes
 
+¿Porque no funciona el POST cuando envio solo texto de contexto?
+
+La api espera que el cuerpo de la peticion envie la misma SIN la variable "file = null", simplemente enviar la peticion sin la variable "file".
+
 400 Texto insuficiente / archivo no soportado / PDF sin contenido legible.
 
 413 Archivo supera el tamaño máximo permitido (10 MB).

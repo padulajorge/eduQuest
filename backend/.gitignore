@@ -31,3 +31,6 @@ htmlcov/
 # Archivos de dependencias
 pip-log.txt
 pip-delete-this-directory.txt
+
+.dist
+node_modules/

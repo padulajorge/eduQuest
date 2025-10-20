@@ -3,18 +3,17 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from dotenv import load_dotenv
 from routers.chatApi import router as chat_router
-from routers.documentsApi import router as documents_router
-from routers.quizApi import router as quiz_router
-
 
 load_dotenv()
 
 app = FastAPI(title="EduQuest API", version="0.1.0")
 
 # Rutas
-app.include_router(quiz_router, prefix="/api")
+@app.get("/")
+async def root():
+    return {"message": "¡Bienvenido a EduQuest API!", "status": "running"}
+
 app.include_router(chat_router, prefix="/chat")
-app.include_router(documents_router, prefix="/api")
 
 
 @app.exception_handler(StarletteHTTPException)
