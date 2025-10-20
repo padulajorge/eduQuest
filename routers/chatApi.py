@@ -8,6 +8,7 @@ from pdf2image import convert_from_bytes
 import pytesseract
 from PIL import Image
 
+# Carga variables de entorno desde .env (por ejemplo, la API key)
 load_dotenv()
 router = APIRouter()
 
