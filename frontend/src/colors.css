@@ -1,0 +1,43 @@
+/* Paleta de colores basada en #0454fc y #04c3ec */
+
+:root {
+  /* Colores principales del logo */
+  --color-primary: #0454fc;      /* Azul principal */
+  --color-secondary: #04c3ec;    /* Cian secundario */
+  
+  /* Variaciones para Header (contraste y profundidad) */
+  --header-bg: linear-gradient(135deg, #021746 0%, #0454fc 100%);
+  --header-text: #ffffff;
+  --header-hover: #0339d6;
+  --header-active: #0380cc;
+  --header-border: rgba(4, 84, 252, 0.3);
+  
+  /* Variaciones para Body (contraste suave) */
+  --body-bg: linear-gradient(135deg, #0a0f2e 0%, #1a2b4d 50%, #0a1f3a 100%);
+  --body-text: #e0e7ff;
+  --body-text-secondary: #cbd5e1;
+  --body-card-bg: rgba(4, 84, 252, 0.08);
+  --body-card-border: rgba(4, 195, 236, 0.2);
+  --body-card-hover: rgba(4, 195, 236, 0.15);
+  
+  /* Colores de acento */
+  --accent-primary: #0454fc;
+  --accent-secondary: #04c3ec;
+  --accent-gradient: linear-gradient(135deg, #0454fc 0%, #04c3ec 100%);
+  
+  /* Colores de estado */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #04c3ec;
+  
+  /* Sombras con los colores del logo */
+  --shadow-primary: rgba(4, 84, 252, 0.3);
+  --shadow-secondary: rgba(4, 195, 236, 0.3);
+  --shadow-hover: rgba(4, 84, 252, 0.4);
+  
+  /* Overlay y transparencias */
+  --overlay-dark: rgba(4, 84, 252, 0.1);
+  --overlay-light: rgba(4, 195, 236, 0.1);
+}
+
